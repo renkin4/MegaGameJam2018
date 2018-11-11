@@ -1,28 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MGJCharacter.h"
-
+#include "InteractorComp.h"
 
 // Sets default values
-AMGJCharacter::AMGJCharacter()
+AMGJCharacter::AMGJCharacter(const class FObjectInitializer & ObjectInitializer)
+	:Super(ObjectInitializer)
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	InteractorComp = ObjectInitializer.CreateDefaultSubobject<UInteractorComp>(this, TEXT("Interactor Component"));
 
-}
-
-// Called when the game starts or when spawned
-void AMGJCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-// Called every frame
-void AMGJCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 // Called to bind functionality to input
@@ -30,5 +17,13 @@ void AMGJCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	InteractorComp->SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+void AMGJCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	check(InteractorComp);
+	InteractorComp->InitInteractor(this, Cast<APlayerController>(GetController()));
+}

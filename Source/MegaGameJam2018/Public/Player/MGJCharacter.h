@@ -6,26 +6,22 @@
 #include "GameFramework/Character.h"
 #include "MGJCharacter.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
 class MEGAGAMEJAM2018_API AMGJCharacter : public ACharacter
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 
 public:
-	// Sets default values for this character's properties
-	AMGJCharacter();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void PostInitializeComponents() override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly ,Category = "Interact", meta = (AllowPrivateAccess = "true"))
+	class UInteractorComp * InteractorComp;
 	
 	
 };
